@@ -1,0 +1,11 @@
+{
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "gitlens.currentLine.enabled": false,
+    "files.exclude": {
+        "**/*.js": true,
+        "**/*.json": true,
+        "**/*.map": true
+    }
+
+}

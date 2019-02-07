@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import * as mx from './mxlibcut';
 
 class App extends Component {
   render() {
-    let ss = "[text-5]";
+    let ver = "ver 0.1.4 (J207)";
+    let ss = `[${mx.sFTime().trim()}]: ${ver}`;
+   
     console.log(`hot-edit test ${ss}...`)
+//    <!-- img src={logo} className="App-logo" alt="logo" />
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
           <p>
             Edit <code>src/App.tsx</code> and save to reload.
           </p>
@@ -19,9 +22,12 @@ class App extends Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React {ss}
+            Learn React
           </a>
+          <br/>
+          {ver}
         </header>
+        <footer>{ss}</footer>
       </div>
     );
   }
