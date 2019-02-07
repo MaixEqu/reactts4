@@ -4,7 +4,8 @@ import './App.css';
 
 class App extends Component {
   render() {
-    let ss = "[text-2]";
+    let ss = "[text-5]";
+    console.log(`hot-edit test ${ss}...`)
     return (
       <div className="App">
         <header className="App-header">
