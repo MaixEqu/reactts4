@@ -6,23 +6,20 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
-class EssayForm extends React.Component {
-
+class Textareas extends React.Component {
     render() {
       return (
-        <div className="example">
-            <span>Essay #1</span>
-            <br/>
-            <textarea cols={40} rows={20}>fsdfds</textarea>
-            <br/>
-            <input type="submit" value="Submit" />
+        <div>
+            <textarea cols={45} rows={55}>textarea 1</textarea>
+            <span> </span>
+            <textarea cols={45} rows={55}>textarea 2</textarea>
         </div>
       );
     }
   }
   
   ReactDOM.render(
-    <EssayForm />,
+    <Textareas />,
     document.getElementById('app')
   );
 
