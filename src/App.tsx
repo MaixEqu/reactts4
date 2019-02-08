@@ -5,7 +5,7 @@ import * as mx from './mxlibcut';
 
 class App extends Component {
   render() {
-    let ver = "ver 0.1.4 (J207)";
+    let ver = "ver 0.1.5 (J208)";
     let ss = `[${mx.sFTime().trim()}]: ${ver}`;
    
     console.log(`hot-edit test ${ss}...`)
@@ -26,6 +26,8 @@ class App extends Component {
           </a>
           <br/>
           {ver}
+          <hr/>
+          <div id="app">dsfsd</div>
         </header>
         <footer>{ss}</footer>
       </div>
