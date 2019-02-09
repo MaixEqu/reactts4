@@ -6,7 +6,7 @@ const console_log = console.log;
 
 export const sFTime = (): string => {
     let oDateNow = new Date();
-    return oDateNow.toISOString().replace(/[A-Z]/g, " "); // + '.' + add3Zero(oDateNow.getMilliseconds());
+    return oDateNow.toISOString().replace(/[A-Z]/g, " ").trim(); // + '.' + add3Zero(oDateNow.getMilliseconds());
 };
 const add3Zero = (n: number): string => ("000" + n).slice(-3);
 //--------------------------------------------------------------------------------------------------

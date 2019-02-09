@@ -1,12 +1,11 @@
-import React, { Component, ChangeEventHandler } from 'react';
+import React, { Component } from 'react';
 import * as mx from './mxlibcut';
 
-const sVersion = "ver 0.1.11 (J209)";
+const sVersion = "ver 0.1.12 (J209)";
 
 export class App extends Component {
   render() {
-    let time_ver = `[${mx.sFTime().trim()}]: ${sVersion}`;
-   
+    let time_ver = `[${mx.sFTime()}]: ${sVersion}`;
     console.log(`hot-edit textareas tests ${time_ver}...`)
     return (
       <div className="App">
@@ -17,39 +16,39 @@ export class App extends Component {
         <footer>{time_ver}</footer>
       </div>
     );
-    //           <div className="VerInfo">{ver}</div>
-
   }
 }
 
-const log = (event: React.ChangeEvent<HTMLInputElement>):void => {
-    console.log("value: ", event.target.value);
-    console.log("defaultValue: ", event.target.defaultValue);
-}
-
-const logT = (event: React.ChangeEvent<HTMLTextAreaElement>):void => {
-    console.log("valueT: ", event.target.value);
-    console.log("defaultValueT: ", event.target.defaultValue);
-}
-
 export class Textareas extends React.Component {
-    render() {
-        return (
-        <div>
-            <textarea cols={25} rows={15} defaultValue="textarea-1" />
-            <span> </span>
-            <textarea cols={25} rows={15} onChange={logT.bind(this)} defaultValue="textarea-2" />
-        </div>
-      );
-    }
+  onChange1 = (event: React.ChangeEvent<HTMLTextAreaElement>):void => {
+    console.log("valueT1: ", event.target.value);
+    console.log("defaultValueT1: ", event.target.defaultValue);
+  }
+  onChange2 = (event: React.ChangeEvent<HTMLTextAreaElement>):void => {
+    console.log("valueT2: ", event.target.value);
+    console.log("defaultValueT2: ", event.target.defaultValue);
+  }
+  render() {
+    return (
+      <div>
+        <textarea cols={25} rows={15} onChange={this.onChange2.bind(this)} defaultValue="textarea-1" />
+        <span> </span>
+        <textarea cols={25} rows={15} onChange={this.onChange2.bind(this)} defaultValue="textarea-2" />
+      </div>
+    );
+  }
 }
 
 export class Input extends React.Component {
-    render() {
-        return (
-            <div>
-                <input type="text" onChange={log.bind(this)} defaultValue="input field 75" /><br/>
-            </div>
-        );
-    }
+  onChange = (event: React.ChangeEvent<HTMLInputElement>):void => {
+    console.log("valueI: ", event.target.value);
+    console.log("defaultValueI: ", event.target.defaultValue);
+  }
+  render() {
+    return (
+      <div>
+        <input type="text" onChange={this.onChange.bind(this)} defaultValue="input field 75" /><br/>
+      </div>
+    );
+  }
 }
