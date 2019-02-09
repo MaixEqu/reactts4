@@ -1,8 +1,7 @@
 import React, { Component, ChangeEventHandler } from 'react';
-//import './App.css';
 import * as mx from './mxlibcut';
 
-const sVersion = "ver 0.1.10 (J209)";
+const sVersion = "ver 0.1.11 (J209)";
 
 export class App extends Component {
   render() {
@@ -22,45 +21,35 @@ export class App extends Component {
 
   }
 }
+
+const log = (event: React.ChangeEvent<HTMLInputElement>):void => {
+    console.log("value: ", event.target.value);
+    console.log("defaultValue: ", event.target.defaultValue);
+}
+
+const logT = (event: React.ChangeEvent<HTMLTextAreaElement>):void => {
+    console.log("valueT: ", event.target.value);
+    console.log("defaultValueT: ", event.target.defaultValue);
+}
+
 export class Textareas extends React.Component {
     render() {
         return (
         <div>
             <textarea cols={25} rows={15} defaultValue="textarea-1" />
             <span> </span>
-            <textarea cols={25} rows={15} defaultValue="textarea-2" />
+            <textarea cols={25} rows={15} onChange={logT.bind(this)} defaultValue="textarea-2" />
         </div>
       );
     }
 }
 
 export class Input extends React.Component {
-    log = (event: React.ChangeEvent<HTMLInputElement>):void => {
-        console.log("value: ", event.target.value);
-        console.log("defaultValue: ", event.target.defaultValue);
-    }
-
-    onChange = (event: React.ChangeEvent<HTMLInputElement> ): void => {
-        console.log("v6 " + mx.sFTime() + this)
-        //this.setState({typed: event.target.value});
-    }
-
     render() {
         return (
             <div>
-                <input type="text" onChange={this.log.bind(this)} defaultValue="input field 78" /><br/>
+                <input type="text" onChange={log.bind(this)} defaultValue="input field 75" /><br/>
             </div>
         );
-                // <input type="text" onChange={this.onChange.bind(this)} defaultValue="input field 77" /><br/>
-            /*
-      return (
-        <div>
-            <input type="text" onChange={this.onChange.bind(this)}/>
-            You typed: <code>{this.state}</code>
-        </div>
-      );
-      */
     }
 }
-
-  
