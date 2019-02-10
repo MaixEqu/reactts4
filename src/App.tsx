@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as mx from './mxlibcut';
 
-const sVersion = "ver 0.2.2 (J210)";
+const sVersion = "ver 0.2.3 (J210)";
 
 export class App extends Component {
   render() {
@@ -11,6 +11,8 @@ export class App extends Component {
       <div className="App">
         <header className="App-header">
           <div id="input"></div>
+          <br />
+          <div id="input2"></div>
         </header>
         <br />
         <footer>{time_ver}</footer>
@@ -21,10 +23,14 @@ export class App extends Component {
 
 // =====================================================
 interface IState {
-  temperature: string;
+  temperature: string
+  scale?: string
 }
 interface IProps {
-  celsius?: number;
+  temperature?: string;
+  celsius?: any;
+  scale?: string;
+  onTemperatureChange?: any;
 }
 
 function BoilingVerdict(props: IProps) {
@@ -60,3 +66,84 @@ export class Calculator extends React.Component<IProps, IState> {
     );
   }
 }
+
+function toCelsius(fahrenheit: number): number {
+  return (fahrenheit - 32) * 5 / 9;
+}
+
+function toFahrenheit(celsius: number): number {
+  return (celsius * 9 / 5) + 32;
+}
+function tryConvert(temperature: string, convert: Function) {
+  const input = parseFloat(temperature);
+  if (Number.isNaN(input)) {
+    return '';
+  }
+  const output = convert(input);
+  const rounded = Math.round(output * 1000) / 1000;
+  return rounded.toString();
+}
+
+class TemperatureInput extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    this.props.onTemperatureChange(e.target.value);
+  }
+
+  render() {
+    const temperature = this.props.temperature;
+    const scale = this.props.scale;
+    return (
+      <fieldset>
+        <legend>Enter temperature in ???:</legend>
+        <input value={temperature}
+               onChange={this.handleChange} />
+      </fieldset>
+    );
+  }
+}
+// <legend>Enter temperature in {scaleNames[scale]}:</legend>
+
+export class Calculator2 extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+    this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+    this.state = {temperature: '', scale: 'c'};
+  }
+
+  handleCelsiusChange(temperature: string) {
+    this.setState({scale: 'c', temperature});
+  }
+
+  handleFahrenheitChange(temperature: string) {
+    this.setState({scale: 'f', temperature});
+  }
+
+  render() {
+    const scale = this.state.scale;
+    const temperature = this.state.temperature;
+    const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+    const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+
+    return (
+      <div>
+        <TemperatureInput
+          scale="c"
+          temperature={celsius}
+          onTemperatureChange={this.handleCelsiusChange} />
+        <TemperatureInput
+          scale="f"
+          temperature={fahrenheit}
+          onTemperatureChange={this.handleFahrenheitChange} />
+        <BoilingVerdict
+          celsius={parseFloat(celsius)} />
+      </div>
+    );
+  }
+}
+
