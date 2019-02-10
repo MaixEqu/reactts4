@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as mx from './mxlibcut';
 
-const sVersion = "ver 0.1.13 (J209)";
+const sVersion = "ver 0.1.14 (J210)";
 
 export class App extends Component {
   render() {
@@ -60,37 +60,34 @@ export class Input extends React.Component {
 }
 
 interface IState {
-  input: string;
   input1: string;
   input2: string;
+  e1: React.ChangeEvent<HTMLInputElement> | undefined
+  e2: React.ChangeEvent<HTMLInputElement> | undefined
 }
 interface IProps {}
 export class Button extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-        input: 'Play 8',
         input1: '1',
-        input2: '2'
+        input2: '2',
+        e1: undefined,
+        e2: undefined,
     };
   }
-  //state: IState = { input: "dfsf" };
-  getState(): string { return this.state.input || "" };
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ input: e.target.value });
-    console.log(this.state.input + " >> " + mx.sFTime());
-  }
   handleChange1 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!this.state.e1) this.setState({ e1: e });
     this.setState({ input1: e.target.value });
     console.log(mx.sFTime()+". 1:"+this.state.input1+", 2:"+this.state.input2);
+    //e.target.value = this.state.input2;
+    if (this.state.e2) this.state.e2.target.value = e.target.value;
   }
   handleChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!this.state.e2) this.setState({ e2: e });
     this.setState({ input2: e.target.value });
     console.log(mx.sFTime()+". 1:"+this.state.input1+", 2:"+this.state.input2);
-  }
-
-  handleClick(e: React.MouseEvent<HTMLInputElement>) {
-    console.log(this.getState() + mx.sFTime());
+    //e.target.value = this.state.input1;
   }
 
   render() {
@@ -98,34 +95,8 @@ export class Button extends React.Component<IProps, IState> {
       <div>
         <input name="mxinput1" type="text" onChange={ this.handleChange1 } />
         <input name="mxinput2" type="text" onChange={ this.handleChange2 } />
-        <input
-          type="button"
-          name="mxbutton"
-          value="Text input 10"
-          onClick={ this.handleClick }
-        />
       </div>
     );
   }
 }
-export class Button2 extends React.Component {
-  handleClick() {
-    if (this.refs.myInput !== null) {
-    	var input: any = this.refs.myInput;
-			var inputValue = input.value;
-      alert("Input is " + inputValue);
-    }
-  }
-  render() {
-    return (
-      <div>
-        <input type="text" ref="myInput" />
-        <input
-          type="button"
-          value="Text input 2"
-          onClick={this.handleClick}
-        />
-      </div>
-    );
-  }
-};
+
