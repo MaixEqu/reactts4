@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as mx from './mxlibcut';
 
-const sVersion = "ver 0.1.14 (J210)";
+const sVersion = "ver 0.2.2 (J210)";
 
 export class App extends Component {
   render() {
@@ -11,92 +11,52 @@ export class App extends Component {
       <div className="App">
         <header className="App-header">
           <div id="input"></div>
-          <div id="button"></div>
-          <div id="textareas"></div>
         </header>
+        <br />
         <footer>{time_ver}</footer>
       </div>
     );
   }
 }
 
-export class Textareas extends React.Component {
-  onChange1 = (event: React.ChangeEvent<HTMLTextAreaElement>):void => {
-    console.log("valueT1: ", event.target.value);
-    console.log("defaultValueT1: ", event.target.defaultValue);
-  }
-  onChange2 = (event: React.ChangeEvent<HTMLTextAreaElement>):void => {
-    console.log("valueT2: ", event.target.value);
-    console.log("defaultValueT2: ", event.target.defaultValue);
-  }
-  render() {
-    return (
-      <div>
-        <textarea name="t1" cols={25} rows={15} onChange={this.onChange1.bind(this)} defaultValue="textarea-1" />
-        <span> </span>
-        <textarea name="t2" cols={25} rows={15} onChange={this.onChange2.bind(this)} defaultValue="textarea-2" />
-      </div>
-    );
-  }
-}
-
-export class Input extends React.Component {
-  onChange = (event: React.ChangeEvent<HTMLInputElement>):void => {
-    console.log("valueI: ", event.target.value);
-    console.log("defaultValueI: ", event.target.defaultValue);
-    this.set(mx.sFTime(), event);
-    console.log("valueI new: ", event.target.value);
-  }
-  set = (value: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    event.target.value = value;
-  }
-  render() {
-    return (
-      <div>
-        <input type="text" onChange={this.onChange.bind(this)} defaultValue="input field 73" /><br/>
-      </div>
-    );
-  }
-}
-
+// =====================================================
 interface IState {
-  input1: string;
-  input2: string;
-  e1: React.ChangeEvent<HTMLInputElement> | undefined
-  e2: React.ChangeEvent<HTMLInputElement> | undefined
+  temperature: string;
 }
-interface IProps {}
-export class Button extends React.Component<IProps, IState> {
+interface IProps {
+  celsius?: number;
+}
+
+function BoilingVerdict(props: IProps) {
+  let sMsg = <p>1 Water would NOT boil.</p>;
+  if (props.celsius && props.celsius >= 100) {
+    sMsg = <p>Water would boil.</p>;
+  }
+  return sMsg
+}
+
+export class Calculator extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
-    this.state = {
-        input1: '1',
-        input2: '2',
-        e1: undefined,
-        e2: undefined,
-    };
+    this.handleChange = this.handleChange.bind(this);
+    this.state = {temperature: ''};
   }
-  handleChange1 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!this.state.e1) this.setState({ e1: e });
-    this.setState({ input1: e.target.value });
-    console.log(mx.sFTime()+". 1:"+this.state.input1+", 2:"+this.state.input2);
-    //e.target.value = this.state.input2;
-    if (this.state.e2) this.state.e2.target.value = e.target.value;
-  }
-  handleChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!this.state.e2) this.setState({ e2: e });
-    this.setState({ input2: e.target.value });
-    console.log(mx.sFTime()+". 1:"+this.state.input1+", 2:"+this.state.input2);
-    //e.target.value = this.state.input1;
+
+  handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    this.setState({temperature: e.target.value});
   }
 
   render() {
+    const temperature = this.state.temperature;
     return (
-      <div>
-        <input name="mxinput1" type="text" onChange={ this.handleChange1 } />
-        <input name="mxinput2" type="text" onChange={ this.handleChange2 } />
-      </div>
+      <fieldset>
+        <legend>02 Enter temperature in Celsius:</legend>
+        <input
+          value={temperature}
+          onChange={this.handleChange} />
+        <BoilingVerdict
+          celsius={parseFloat(temperature)} />
+      </fieldset>
     );
   }
 }
-
