@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as mx from './mxlibcut';
 
-const sVersion = "ver 0.2.3 (J210)";
+const sVersion = "ver 0.2.4 (J210)";
 
 export class App extends Component {
   render() {
@@ -28,9 +28,9 @@ interface IState {
 }
 interface IProps {
   temperature?: string;
-  celsius?: any;
+  celsius?: number;
   scale?: string;
-  onTemperatureChange?: any;
+  onTemperatureChange?: (value: string) => void;
 }
 
 function BoilingVerdict(props: IProps) {
@@ -91,7 +91,8 @@ class TemperatureInput extends React.Component<IProps, IState> {
   }
 
   handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    this.props.onTemperatureChange(e.target.value);
+    if (this.props.onTemperatureChange)
+       this.props.onTemperatureChange(e.target.value);
   }
 
   render() {
