@@ -6,7 +6,7 @@ const console_log = console.log;
 
 export const sFTime = (): string => {
     let oDateNow = new Date();
-    return oDateNow.toISOString().replace(/[A-Z]/g, " ").trim(); // + '.' + add3Zero(oDateNow.getMilliseconds());
+    return oDateNow.toLocaleString() + '.' + add3Zero(oDateNow.getMilliseconds());
 };
 const add3Zero = (n: number): string => ("000" + n).slice(-3);
 //--------------------------------------------------------------------------------------------------
@@ -33,6 +33,10 @@ const logMapElements = (value: any, key: any) => {
 }
 export const lHash = (hash: any) => hash.forEach(logMapElements);
 
+export const aSortUnique = (arr: string[]): string[] => {
+    return [...new Set(arr)].sort();
+};
+
 export const aArrayUnion = (arr1: string[], arr2: string[]): string[] => {
     return arr1.concat(arr2);
 };
@@ -53,6 +57,30 @@ export const aGetByREx = (str: string, re: string): string[] => {
     };
     return aRes;
 };
+
+//==================================================================================================
+export const tr = (sLine: string, frABC?: string, toABC?: string): string => {
+    frABC = frABC || "abcdefghijklmnopqrstuvwxyz";
+    toABC = toABC || "абцдефгхійклмнопщрстувшжиз";
+    if (frABC.length > toABC.length) toABC = toABC.padEnd(frABC.length, "?");
+    [...frABC].forEach( (sym, i) => { if (toABC) sLine = sLine.replace(new RegExp(sym, "g"), toABC[i]) });
+    return sLine;
+};
+export const tr2by2 = (sLine: string, frABC: string, toABC: string): string => {
+    if (frABC.length > toABC.length) toABC = toABC.padEnd(frABC.length, "?");
+    for(let i=1; i < sLine.length; i +=2 ) {
+        sLine = sLine.replace(new RegExp(frABC[i-1] + frABC[i] , "g"), toABC[i-1]+toABC[i]);
+    };
+    return sLine;
+};
+
+/*
+tr("ΑΒΓΔΕΖΗΘΙΚΛΜΝΟΠΡΣΤΥΦΧΩ", "ABGDEZITIKLMNOPRSTIFHO");
+tr("αβγδεζηθικλμνοπρστυφχω", "abgdezitiklmnoprstifho");
+s(/Ξ/g, "X"); s(/Ψ/g, "Ps");
+s(/ξ/g, "x"); s(/ψ/g, "Ps");
+s(/ς/g, "s");
+*/
 
 //==================================================================================================
 // classes...
