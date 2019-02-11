@@ -6,4 +6,4 @@ import './index.css';
 
 ReactDOM.render(<App.Main />, document.getElementById('root'));
 ReactDOM.render(<App.TextAreas />, document.getElementById('textareas'));
-ReactDOM.render(<App.TextAreas0 />, document.getElementById('textareas0'));
+//ReactDOM.render(<App.TextAreas0 />, document.getElementById('textareas0'));

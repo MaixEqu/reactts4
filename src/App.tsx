@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 // import * as mx from './mxlibcut';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.3.2 (J210)";
+const sVersion = "ver 0.3.3 (J211)";
 
 export class Main extends Component {
   render() {
     let time_ver = `[${mx.sFTime()}]: ${sVersion}`;
     // console.log(`hot-edit textareas tests ${time_ver}...`)
+    //           <div id="textareas0">textareas tests</div>
     return (
       <div className="App">
         <header className="App-header">
-          <div id="textareas0">textareas tests</div>
           <div id="textareas">textareas</div>
         </header>
         <br />
@@ -80,11 +80,8 @@ class TemperatureTArea extends React.Component<IProps, IState> {
     const scale = this.props.scale || 'c';
     const scaleName = scaleNames.get(scale);
     return (
-      <fieldset>
-        <legend>Enter temperature in {scaleName}:</legend>
-        <textarea rows={15} cols={45} value={temperature}
+        <textarea className="halfsize" rows={15} cols={45} value={temperature}
                onChange={this.handleChange} />
-      </fieldset>
     );
   }
 }
@@ -93,8 +90,8 @@ export class TextAreas extends React.Component<IProps, IState> {
     super(props);
     this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
     this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
-    //this.state = {temperature: '0', scale: 'c'};
-    this.state = {temperature: '100', scale: 'f'};
+    this.state = {temperature: '0', scale: 'c'};
+    //this.state = {temperature: '100', scale: 'f'};
   }
 
   handleCelsiusChange(temperature: string) {
@@ -113,14 +110,19 @@ export class TextAreas extends React.Component<IProps, IState> {
 
     return (
       <div>
-        <TemperatureTArea
-          scale="c"
-          temperature={celsius}
-          onTemperatureChange={this.handleCelsiusChange} />
-        <TemperatureTArea
-          scale="f"
-          temperature={fahrenheit}
-          onTemperatureChange={this.handleFahrenheitChange} />
+        <fieldset>
+          <legend>Enter temperature:</legend>
+          <div>
+            <TemperatureTArea
+              scale="c"
+              temperature={celsius}
+              onTemperatureChange={this.handleCelsiusChange} />
+            <TemperatureTArea
+              scale="f"
+              temperature={fahrenheit}
+              onTemperatureChange={this.handleFahrenheitChange} />
+          </div>
+        </fieldset>
         <BoilingVerdict
           celsius={parseFloat(celsius)} />
       </div>
