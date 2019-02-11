@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import * as mx from './mxlibcut';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.3.3 (J211)";
+const sVersion = "ver 0.3.4 (J211)";
 
 export class Main extends Component {
   render() {
@@ -27,6 +27,7 @@ interface IState {
   scale?: string
 }
 interface IProps {
+  id?: string;
   temperature?: string;
   celsius?: number;
   scale?: string;
@@ -71,18 +72,45 @@ class TemperatureTArea extends React.Component<IProps, IState> {
   }
 
   handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    console.log("changed")
     if (this.props.onTemperatureChange)
        this.props.onTemperatureChange(e.target.value);
+  }
+
+  handleClick(e: any) {
+    console.log("clicked")
+  }
+
+  handleResize(e: any) {
+    console.log("resize")
+  }
+
+  handleKeyDown(e: any) {
+    e.target.style.height = 'inherit';
+    e.target.style.height = `${e.target.scrollHeight}px`; 
+    // In case you have a limitation
+    // e.target.style.height = `${Math.min(e.target.scrollHeight, limit)}px`;
   }
 
   render() {
     const temperature = this.props.temperature;
     const scale = this.props.scale || 'c';
     const scaleName = scaleNames.get(scale);
+    const sID = this.props.id ? `"${this.props.id}"` : `"noID"`;
+  /* */
     return (
-        <textarea className="halfsize" rows={15} cols={45} value={temperature}
-               onChange={this.handleChange} />
+        <textarea id={sID} className="halfsize" rows={15} cols={45} value={temperature} 
+          onClick={this.handleClick}
+          onChange={this.handleChange}
+          onKeyDown={this.handleKeyDown}
+        />
     );
+  /* */
+  /*
+    return (
+      <textarea style={{width: "49%"}} rows={15} cols={45} value={temperature} onClick={this.handleClick} onChange={this.handleChange} />
+    );
+  */
   }
 }
 export class TextAreas extends React.Component<IProps, IState> {
@@ -90,8 +118,8 @@ export class TextAreas extends React.Component<IProps, IState> {
     super(props);
     this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
     this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
-    this.state = {temperature: '0', scale: 'c'};
-    //this.state = {temperature: '100', scale: 'f'};
+    //this.state = {temperature: '0', scale: 'c'};
+    this.state = {temperature: '211', scale: 'f'};
   }
 
   handleCelsiusChange(temperature: string) {
@@ -114,10 +142,13 @@ export class TextAreas extends React.Component<IProps, IState> {
           <legend>Enter temperature:</legend>
           <div>
             <TemperatureTArea
+              id="input"
               scale="c"
               temperature={celsius}
               onTemperatureChange={this.handleCelsiusChange} />
+            {' '}
             <TemperatureTArea
+              id="output"
               scale="f"
               temperature={fahrenheit}
               onTemperatureChange={this.handleFahrenheitChange} />
