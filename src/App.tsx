@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-// import * as mx from './mxlibcut';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.4.1 (J211)";
+const sVersion = "ver 0.4.2 (J211)";
 
 export class Main extends Component {
   render() {
@@ -24,6 +23,7 @@ interface IState {
   text: string
   scale?: string
 }
+
 interface IProps {
   id?: string;
   temperature?: string;
@@ -34,13 +34,6 @@ interface IProps {
 }
 
 const BoilingVerdict = (state: IState) => {
-  /*
-  let sMsg = <p>1 Water would not boil ({props.celsius}).</p>;
-  if (props.celsius && props.celsius >= 100) {
-    sMsg = <p>Water would boil ({props.celsius})!</p>;
-  }
-  return sMsg
-  */
   return <p>Length of the text is [{state.text.length}] symbols.</p>;
 }
 
@@ -50,10 +43,9 @@ const sConvert = (str: string, convert: Function): string => {
   return convert(str);
 }
 
-
 const scaleNames: Map<string, string> = new Map([
-  ['c', 'Celsius'],
-  ['f', 'Fahrenheit'],
+  ['txt', 'Text'],
+  ['res', 'Result'],
 ]);
 
 class TemperatureTArea extends React.Component<IProps, IState> {
@@ -63,7 +55,6 @@ class TemperatureTArea extends React.Component<IProps, IState> {
   }
 
   handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    //console.log("changed")
     if (this.props.onTemperatureChange)
        this.props.onTemperatureChange(e.target.value);
   }
@@ -71,75 +62,65 @@ class TemperatureTArea extends React.Component<IProps, IState> {
   handleKeyDown(e: any) {
     e.target.style.height = 'inherit';
     e.target.style.height = `${e.target.scrollHeight}px`; 
-    // In case you have a limitation
-    // e.target.style.height = `${Math.min(e.target.scrollHeight, limit)}px`;
   }
 
   render() {
     const temperature = this.props.temperature;
-    const scale = this.props.scale || 'c';
+    const scale = this.props.scale || 'txt';
     const scaleName = scaleNames.get(scale);
     const sID = this.props.id ? `"${this.props.id}"` : `"noID"`;
-  /* */
     return (
-        <textarea id={sID} className="halfsize" rows={5} cols={45} 
+        <textarea id={sID} style={{width: "30%"}} className="halfsize22" rows={5} cols={45} 
           value={temperature}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
           readOnly={this.props.readonly}
         />
     );
-  /* */
-  /*
-    return (
-      <textarea style={{width: "49%"}} rows={15} cols={45} value={temperature} onClick={this.handleClick} onChange={this.handleChange} />
-    );
-  */
   }
 }
+// <textarea style={{width: "49%"}} rows={15} cols={45} value={temperature} onClick={this.handleClick} onChange={this.handleChange} />
+
 export class TextAreas extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
     this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
-    this.state = {text: 'hello to Mx', scale: 'c'};
+    this.state = {text: 'hello to Mx', scale: 'txt'};
   }
 
   handleCelsiusChange(text: string) {
-  this.setState({scale: 'c', text});
-}
+    this.setState({scale: 'txt', text});
+  }
 
-handleFahrenheitChange(text: string) {
-  this.setState({scale: 'f', text});
-}
-render() {
+  handleFahrenheitChange(text: string) {
+    this.setState({scale: 'res', text});
+  }
+  render() {
     const scale = this.state.scale;
     const text = this.state.text;
-    const celsius = scale === 'f' ? sConvert(text, doSpaces) : text;
-    const fahrenheit = scale === 'c' ? sConvert(text, doUnderlines) : text;
+    const celsius = scale === 'res' ? sConvert(text, doSpaces) : text;
+    const fahrenheit = scale === 'txt' ? sConvert(text, doUnderlines) : text;
 
     return (
       <div>
-        <BoilingVerdict text={this.state.text}  />
         <fieldset>
-          <legend>Enter temperature:</legend>
+          <legend>Enter text:</legend>
           <div>
             <TemperatureTArea
-              id="input"
-              scale="c"
+              scale="txt"
               temperature={celsius}
               onTemperatureChange={this.handleCelsiusChange} />
             {' '}
             <TemperatureTArea
-              id="output"
-              scale="f"
+              scale="res"
               temperature={fahrenheit}
               readonly={true}
               onTemperatureChange={this.handleFahrenheitChange} />
           </div>
         </fieldset>
+        <BoilingVerdict text={this.state.text}  />
       </div>
     );
   }
 }
-
