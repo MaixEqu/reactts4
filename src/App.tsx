@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import * as mx from './mxlibcut';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.3.0 (J210)";
+const sVersion = "ver 0.3.1 (J210)";
 
 export class Main extends Component {
   render() {
@@ -33,9 +33,9 @@ interface IProps {
 }
 
 const BoilingVerdict = (props: IProps) => {
-  let sMsg = <p>1 Water would NOT boil.</p>;
+  let sMsg = <p>1 Water would not boil ({props.celsius}).</p>;
   if (props.celsius && props.celsius >= 100) {
-    sMsg = <p>Water would boil.</p>;
+    sMsg = <p>Water would boil ({props.celsius})!</p>;
   }
   return sMsg
 }
@@ -92,7 +92,7 @@ export class TextAreas extends React.Component<IProps, IState> {
     super(props);
     this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
     this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
-    this.state = {temperature: '', scale: 'c'};
+    this.state = {temperature: '0', scale: 'c'};
   }
 
   handleCelsiusChange(temperature: string) {
