@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 // import * as mx from './mxlibcut';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.4.0 (J211)";
+const sVersion = "ver 0.4.1 (J211)";
 
 export class Main extends Component {
   render() {
     let time_ver = `[${mx.sFTime()}]: ${sVersion}`;
-    // console.log(`hot-edit textareas tests ${time_ver}...`)
-    //           <div id="textareas0">textareas tests</div>
     return (
       <div className="App">
         <header className="App-header">
@@ -23,7 +21,6 @@ export class Main extends Component {
 
 // =====================================================
 interface IState {
-  //temperature: string
   text: string
   scale?: string
 }
@@ -33,35 +30,18 @@ interface IProps {
   celsius?: number;
   scale?: string;
   onTemperatureChange?: (value: string) => void;
+  readonly?: boolean;
 }
 
-const BoilingVerdict = (props: IProps) => {
+const BoilingVerdict = (state: IState) => {
+  /*
   let sMsg = <p>1 Water would not boil ({props.celsius}).</p>;
   if (props.celsius && props.celsius >= 100) {
     sMsg = <p>Water would boil ({props.celsius})!</p>;
   }
   return sMsg
-}
-
-const toCelsius = (fahrenheit: number): number => {
-  return (fahrenheit - 32) * 5 / 9;
-}
-
-const toFahrenheit = (celsius: number): number => {
-  return (celsius * 9 / 5) + 32;
-}
-
-const tryConvert = (temperature: string, convert: Function) => {
-  /*
-  const input = parseFloat(temperature);
-  if (Number.isNaN(input)) {
-    return '';
-  }
-  const output = convert(input);
-  const rounded = Math.round(output * 1000) / 1000;
-  return rounded.toString();
   */
-  return "";
+  return <p>Length of the text is [{state.text.length}] symbols.</p>;
 }
 
 const doUnderlines = (s: string) => s.replace(/ /g, "_");
@@ -102,9 +82,11 @@ class TemperatureTArea extends React.Component<IProps, IState> {
     const sID = this.props.id ? `"${this.props.id}"` : `"noID"`;
   /* */
     return (
-        <textarea id={sID} className="halfsize" rows={5} cols={45} value={temperature} 
+        <textarea id={sID} className="halfsize" rows={5} cols={45} 
+          value={temperature}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
+          readOnly={this.props.readonly}
         />
     );
   /* */
@@ -120,20 +102,10 @@ export class TextAreas extends React.Component<IProps, IState> {
     super(props);
     this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
     this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
-    //this.state = {temperature: '0', scale: 'c'};
-    //this.state = {temperature: '111', scale: 'c'};
     this.state = {text: 'hello to Mx', scale: 'c'};
   }
-/*
-  handleCelsiusChange(temperature: string) {
-    this.setState({scale: 'c', temperature});
-  }
 
-  handleFahrenheitChange(temperature: string) {
-    this.setState({scale: 'f', temperature});
-  }
-*/
-handleCelsiusChange(text: string) {
+  handleCelsiusChange(text: string) {
   this.setState({scale: 'c', text});
 }
 
@@ -143,14 +115,12 @@ handleFahrenheitChange(text: string) {
 render() {
     const scale = this.state.scale;
     const text = this.state.text;
-    //const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
-    //const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
     const celsius = scale === 'f' ? sConvert(text, doSpaces) : text;
     const fahrenheit = scale === 'c' ? sConvert(text, doUnderlines) : text;
 
     return (
       <div>
-        <BoilingVerdict celsius={parseFloat(celsius)} />
+        <BoilingVerdict text={this.state.text}  />
         <fieldset>
           <legend>Enter temperature:</legend>
           <div>
@@ -164,6 +134,7 @@ render() {
               id="output"
               scale="f"
               temperature={fahrenheit}
+              readonly={true}
               onTemperatureChange={this.handleFahrenheitChange} />
           </div>
         </fieldset>
