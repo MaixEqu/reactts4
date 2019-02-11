@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import * as mx from './mxlibcut';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.3.4 (J211)";
+const sVersion = "ver 0.4.0 (J211)";
 
 export class Main extends Component {
   render() {
@@ -23,7 +23,8 @@ export class Main extends Component {
 
 // =====================================================
 interface IState {
-  temperature: string
+  //temperature: string
+  text: string
   scale?: string
 }
 interface IProps {
@@ -51,6 +52,7 @@ const toFahrenheit = (celsius: number): number => {
 }
 
 const tryConvert = (temperature: string, convert: Function) => {
+  /*
   const input = parseFloat(temperature);
   if (Number.isNaN(input)) {
     return '';
@@ -58,7 +60,16 @@ const tryConvert = (temperature: string, convert: Function) => {
   const output = convert(input);
   const rounded = Math.round(output * 1000) / 1000;
   return rounded.toString();
+  */
+  return "";
 }
+
+const doUnderlines = (s: string) => s.replace(/ /g, "_");
+const doSpaces = (s: string) => s.replace(/_/g, " ");
+const sConvert = (str: string, convert: Function): string => {
+  return convert(str);
+}
+
 
 const scaleNames: Map<string, string> = new Map([
   ['c', 'Celsius'],
@@ -72,17 +83,9 @@ class TemperatureTArea extends React.Component<IProps, IState> {
   }
 
   handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    console.log("changed")
+    //console.log("changed")
     if (this.props.onTemperatureChange)
        this.props.onTemperatureChange(e.target.value);
-  }
-
-  handleClick(e: any) {
-    console.log("clicked")
-  }
-
-  handleResize(e: any) {
-    console.log("resize")
   }
 
   handleKeyDown(e: any) {
@@ -99,8 +102,7 @@ class TemperatureTArea extends React.Component<IProps, IState> {
     const sID = this.props.id ? `"${this.props.id}"` : `"noID"`;
   /* */
     return (
-        <textarea id={sID} className="halfsize" rows={15} cols={45} value={temperature} 
-          onClick={this.handleClick}
+        <textarea id={sID} className="halfsize" rows={5} cols={45} value={temperature} 
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
         />
@@ -119,9 +121,10 @@ export class TextAreas extends React.Component<IProps, IState> {
     this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
     this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
     //this.state = {temperature: '0', scale: 'c'};
-    this.state = {temperature: '211', scale: 'f'};
+    //this.state = {temperature: '111', scale: 'c'};
+    this.state = {text: 'hello to Mx', scale: 'c'};
   }
-
+/*
   handleCelsiusChange(temperature: string) {
     this.setState({scale: 'c', temperature});
   }
@@ -129,15 +132,25 @@ export class TextAreas extends React.Component<IProps, IState> {
   handleFahrenheitChange(temperature: string) {
     this.setState({scale: 'f', temperature});
   }
+*/
+handleCelsiusChange(text: string) {
+  this.setState({scale: 'c', text});
+}
 
-  render() {
+handleFahrenheitChange(text: string) {
+  this.setState({scale: 'f', text});
+}
+render() {
     const scale = this.state.scale;
-    const temperature = this.state.temperature;
-    const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
-    const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+    const text = this.state.text;
+    //const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature;
+    //const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature;
+    const celsius = scale === 'f' ? sConvert(text, doSpaces) : text;
+    const fahrenheit = scale === 'c' ? sConvert(text, doUnderlines) : text;
 
     return (
       <div>
+        <BoilingVerdict celsius={parseFloat(celsius)} />
         <fieldset>
           <legend>Enter temperature:</legend>
           <div>
@@ -154,26 +167,8 @@ export class TextAreas extends React.Component<IProps, IState> {
               onTemperatureChange={this.handleFahrenheitChange} />
           </div>
         </fieldset>
-        <BoilingVerdict
-          celsius={parseFloat(celsius)} />
       </div>
     );
   }
 }
 
-// -------------
-
-export class TextAreas0 extends React.Component {
-  render() {
-    return (
-      <fieldset>
-        <legend>Enter temperature in ???:</legend>
-        <div>
-          <textarea cols={25} className="halfsize" rows={15} defaultValue="textarea-1" />
-          <span> </span>
-          <textarea cols={25} className="halfsize" rows={15} defaultValue="textarea-2" />
-        </div>
-      </fieldset>
-    );
-  }
-}
