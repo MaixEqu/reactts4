@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import * as mx from './mxlibcut';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.3.1 (J210)";
+const sVersion = "ver 0.3.2 (J210)";
 
 export class Main extends Component {
   render() {
@@ -11,6 +11,7 @@ export class Main extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <div id="textareas0">textareas tests</div>
           <div id="textareas">textareas</div>
         </header>
         <br />
@@ -92,7 +93,8 @@ export class TextAreas extends React.Component<IProps, IState> {
     super(props);
     this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
     this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
-    this.state = {temperature: '0', scale: 'c'};
+    //this.state = {temperature: '0', scale: 'c'};
+    this.state = {temperature: '100', scale: 'f'};
   }
 
   handleCelsiusChange(temperature: string) {
@@ -122,6 +124,23 @@ export class TextAreas extends React.Component<IProps, IState> {
         <BoilingVerdict
           celsius={parseFloat(celsius)} />
       </div>
+    );
+  }
+}
+
+// -------------
+
+export class TextAreas0 extends React.Component {
+  render() {
+    return (
+      <fieldset>
+        <legend>Enter temperature in ???:</legend>
+        <div>
+          <textarea cols={25} className="halfsize" rows={15} defaultValue="textarea-1" />
+          <span> </span>
+          <textarea cols={25} className="halfsize" rows={15} defaultValue="textarea-2" />
+        </div>
+      </fieldset>
     );
   }
 }
