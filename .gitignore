@@ -3,5 +3,9 @@
 # dependencies
 /node_modules
 
+# builds
+/build
+/build_
+
 # package-lock.json 
 package-lock.json
