@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.4.5 (J212)";
+const sVersion = "ver 0.4.6 (J212)";
 
 export class Main extends Component {
   render() {
@@ -21,7 +21,7 @@ export class Main extends Component {
 // =====================================================
 interface IState {
   text: string
-  //scale?: string
+  width2?: string
   height2?: string
 }
 
@@ -56,6 +56,7 @@ class TextArea3 extends React.Component<IProps, IState> {
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.state = {text: "txt", height2: "100"};
     //this.setState({width2: "200"});
     //this.setState({height2: "200"});
   }
@@ -67,7 +68,8 @@ class TextArea3 extends React.Component<IProps, IState> {
 
   handleKeyDown(e: any ) {
     //e.target.style.height = 'inherit';
-    //e.target.style.height = `${e.target.scrollHeight}px`; 
+    //e.target.style.height = `${e.target.scrollHeight}px`;
+    //this.setState({height2: e.target.scrollHeight});
   }
   
   handleMouseDown(e: any ) {
@@ -75,6 +77,9 @@ class TextArea3 extends React.Component<IProps, IState> {
     console.log("Mdown2, " + `${e.target.scrollHeight}px`);
     //this.setState({height2: "590"});
     //e.target.style.height = `${e.target.scrollHeight+20}px`;
+    let sNew = this.state.height2 || "222";
+    sNew = (parseFloat(sNew)+3).toString();
+    this.setState({height2: sNew});
   }
   render() {
     const temperature = this.props.text;
@@ -116,8 +121,9 @@ export class TextAreas extends React.Component<IProps, IState> {
     //this.setState({scale: 'txt', text});
     this.setState({text});
     let sNew = this.state.height2;
-    sNew = sNew ? (parseFloat(sNew)+4).toString() : "212";
+    sNew = sNew ? (parseFloat(sNew)+2).toString() : "222";
     this.setState({height2: sNew});
+    this.setState({width2: sNew});
   }
 /*
   handleResultChange(text: string) {
@@ -132,6 +138,7 @@ export class TextAreas extends React.Component<IProps, IState> {
     //const scale = this.state.scale;
     const text = this.state.text;
     const heigth = this.state.height2;
+    const width = this.state.width2;
     //const sText = scale === 'res' ? sConvert(text, doSpaces) : text;
     //const sResult = scale === 'txt' ? sConvert(sText, doUnderlines) : sText;
 
@@ -144,12 +151,14 @@ export class TextAreas extends React.Component<IProps, IState> {
               scale="txt"
               text={text}
               height={heigth}
+              width={width}
               onTemperatureChange={this.handleTextChange} />
             {' '}
             <TextArea3
               scale="res"
               text={sConvert(text, doUnderlines)}
               height={heigth}
+              width={width}
               readonly={true} />
           </div>
         </fieldset>
