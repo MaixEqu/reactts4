@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.4.2 (J211)";
+const sVersion = "ver 0.4.3 (J211)";
 
 export class Main extends Component {
   render() {
@@ -31,7 +31,8 @@ interface IProps {
   scale?: string;
   onTemperatureChange?: (value: string) => void;
   readonly?: boolean;
-}
+  width?: string
+  height?: string}
 
 const BoilingVerdict = (state: IState) => {
   return <p>Length of the text is [{state.text.length}] symbols.</p>;
@@ -67,10 +68,18 @@ class TemperatureTArea extends React.Component<IProps, IState> {
   render() {
     const temperature = this.props.temperature;
     const scale = this.props.scale || 'txt';
-    const scaleName = scaleNames.get(scale);
+    //const scaleName = scaleNames.get(scale);
     const sID = this.props.id ? `"${this.props.id}"` : `"noID"`;
+    const sW = this.props.width  || 400;
+    const sH = this.props.height || 200;
+    const sStyle = `width: "${sW}px", height: "200px"`
+    const taStyle = {
+      width: sW+'px',
+      height: sH+'px'
+    };
+    // {width: "244px", height: "300px"}
     return (
-        <textarea id={sID} style={{width: "30%"}} className="halfsize22" rows={5} cols={45} 
+        <textarea id={sID} style={taStyle} className="halfsize_" rows={5} cols={45} 
           value={temperature}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
@@ -110,6 +119,7 @@ export class TextAreas extends React.Component<IProps, IState> {
             <TemperatureTArea
               scale="txt"
               temperature={celsius}
+              height="400"
               onTemperatureChange={this.handleCelsiusChange} />
             {' '}
             <TemperatureTArea
