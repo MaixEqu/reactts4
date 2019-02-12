@@ -32,7 +32,8 @@ interface IProps {
   readonly?: boolean;
   width?: string
   height?: string
-  onTextChange?: (value: string) => void;
+  onTextChange?: (value: string, e: any) => void;
+  onMDown?: (value: string, e: any) => void;
 }
 
 const BoilingVerdict = (state: IState) => {
@@ -62,24 +63,29 @@ class TextArea3 extends React.Component<IProps, IState> {
   }
 
   handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    if (this.props.onTextChange)
-       this.props.onTextChange(e.target.value);
+    if (this.props.onTextChange) this.props.onTextChange(e.target.value, e);
+  }
+  handleMDown(e: React.MouseEvent<HTMLTextAreaElement>) {
+    if (this.props.onMDown) this.props.onMDown(e);
   }
 
   handleKeyDown(e: any ) {
     //e.target.style.height = 'inherit';
     //e.target.style.height = `${e.target.scrollHeight}px`;
     //this.setState({height2: e.target.scrollHeight});
+    console.log("Kdown1, " + `${e.target.scrollHeight}px`);
+    this.setState({height2: e.target.scrollHeight});
   }
   
   handleMouseDown1(e: any ) {
     //alert("Mdown, " + `${e.target.scrollHeight}px`);
-    console.log("Mdown2, " + `${e.target.scrollHeight}px`);
+    console.log("Mdown3, " + `${e.target.scrollHeight}px`);
     //this.setState({height2: "590"});
     //e.target.style.height = `${e.target.scrollHeight+20}px`;
-    let sNew = this.state.height2 || "222";
+    //let sNew = this.state.height2 || "222";
     //sNew = (parseFloat(sNew)+3).toString();
-    this.setState({height2: "100"});
+    //this.setState({height2: "100"});
+    this.setState({height2: e.target.scrollHeight});
   }
   render() {
     const temperature = this.props.text;
@@ -99,7 +105,7 @@ class TextArea3 extends React.Component<IProps, IState> {
           value={temperature}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
-          onMouseDown={this.handleMouseDown1}
+          onMouseDown={this.handleMDown}
           readOnly={this.props.readonly}
         />
     );
@@ -112,29 +118,37 @@ export class TextAreas extends React.Component<IProps, IState> {
     super(props);
     this.handleTextChange = this.handleTextChange.bind(this);
     // this.handleResultChange = this.handleResultChange.bind(this);
-    this.handleHeightChange = this.handleHeightChange.bind(this);
-    //this.state = {text: 'hello to Mx', scale: 'txt', height2: '300'};
+    this.handleMDown = this.handleMDown.bind(this);
+    // this.state = {text: 'hello to Mx', scale: 'txt', height2: '300'};
     this.state = {text: 'hello to Mx', height2: '300'};
   }
 
-  handleTextChange(text: string) {
+  handleTextChange(text: string, e: any) {
     //this.setState({scale: 'txt', text});
     this.setState({text});
+    /*
     let nRandom = Math.random() * 100 > 50 ? 1 : -1;
-    let sNew = this.state.height2;
+    let sNew = e.target.scrollHeight; //this.state.height2;
     sNew = sNew ? (parseFloat(sNew)+nRandom).toString() : "222";
     //let sNew = "111";
-    this.setState({height2: sNew});
-    this.setState({width2: sNew});
+    */
+    this.setState({height2: e.target.scrollHeight});
+    this.setState({width2: e.target.scrollWidth});
+    console.log("onChange W2: " + e.target.scrollWidth);
+    console.log("onChange H2: " + e.target.scrollHeight);
+    /* */
   }
 /*
   handleResultChange(text: string) {
     this.setState({scale: 'res', text});
   }
 */
-  handleHeightChange(height: string) {
-    this.setState({height2: height});
+
+  handleMDown(height: string) {
+    //this.setState({height2: height});
+    console.log("MDown10")
   }
+
 
   handleMouseDown2(e: any ) {
     //alert("Mdown, " + `${e.target.scrollHeight}px`);
@@ -171,8 +185,8 @@ export class TextAreas extends React.Component<IProps, IState> {
               text={sConvert(text, doUnderlines)}
               height={heigth}
               width={width}
-              readonly={true}
-              onTextChange={this.handleMouseDown2} />
+              readonly={true} 
+              onMDown={this.handleMDown} />
           </div>
         </fieldset>
         <BoilingVerdict text={this.state.text}  />
