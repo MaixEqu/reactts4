@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.4.7 (J212)";
+const sVersion = "ver 0.4.8 (J212)";
 
 export class Main extends Component {
   render() {
@@ -33,7 +33,7 @@ interface IProps {
   width?: string
   height?: string
   onTextChange?: (value: string, e: any) => void;
-  onMDown?: (value: string, e: any) => void;
+  onMDown?: (e: any) => void;
 }
 
 const BoilingVerdict = (state: IState) => {
@@ -56,7 +56,7 @@ class TextArea3 extends React.Component<IProps, IState> {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleMouseDown1 = this.handleMouseDown1.bind(this);
+    this.handleMDown = this.handleMDown.bind(this);
     this.state = {text: "txt", height2: "100"};
     //this.setState({width2: "200"});
     //this.setState({height2: "200"});
@@ -144,9 +144,13 @@ export class TextAreas extends React.Component<IProps, IState> {
   }
 */
 
-  handleMDown(height: string) {
+  handleMDown(e: any) {
     //this.setState({height2: height});
     console.log("MDown10")
+    this.setState({height2: e.target.scrollHeight});
+    this.setState({width2: e.target.scrollWidth});
+    console.log("onChange WD: " + e.target.scrollWidth);
+    console.log("onChange HD: " + e.target.scrollHeight);
   }
 
 
@@ -185,8 +189,7 @@ export class TextAreas extends React.Component<IProps, IState> {
               text={sConvert(text, doUnderlines)}
               height={heigth}
               width={width}
-              readonly={true} 
-              onMDown={this.handleMDown} />
+              onMDown ={this.handleMDown} />
           </div>
         </fieldset>
         <BoilingVerdict text={this.state.text}  />
