@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.4.6 (J212)";
+const sVersion = "ver 0.4.7 (J212)";
 
 export class Main extends Component {
   render() {
@@ -32,7 +32,7 @@ interface IProps {
   readonly?: boolean;
   width?: string
   height?: string
-  onTemperatureChange?: (value: string) => void;
+  onTextChange?: (value: string) => void;
 }
 
 const BoilingVerdict = (state: IState) => {
@@ -55,15 +55,15 @@ class TextArea3 extends React.Component<IProps, IState> {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.handleMouseDown1 = this.handleMouseDown1.bind(this);
     this.state = {text: "txt", height2: "100"};
     //this.setState({width2: "200"});
     //this.setState({height2: "200"});
   }
 
   handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    if (this.props.onTemperatureChange)
-       this.props.onTemperatureChange(e.target.value);
+    if (this.props.onTextChange)
+       this.props.onTextChange(e.target.value);
   }
 
   handleKeyDown(e: any ) {
@@ -72,14 +72,14 @@ class TextArea3 extends React.Component<IProps, IState> {
     //this.setState({height2: e.target.scrollHeight});
   }
   
-  handleMouseDown(e: any ) {
+  handleMouseDown1(e: any ) {
     //alert("Mdown, " + `${e.target.scrollHeight}px`);
     console.log("Mdown2, " + `${e.target.scrollHeight}px`);
     //this.setState({height2: "590"});
     //e.target.style.height = `${e.target.scrollHeight+20}px`;
     let sNew = this.state.height2 || "222";
-    sNew = (parseFloat(sNew)+3).toString();
-    this.setState({height2: sNew});
+    //sNew = (parseFloat(sNew)+3).toString();
+    this.setState({height2: "100"});
   }
   render() {
     const temperature = this.props.text;
@@ -99,7 +99,7 @@ class TextArea3 extends React.Component<IProps, IState> {
           value={temperature}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
-          onMouseDown={this.handleMouseDown}
+          onMouseDown={this.handleMouseDown1}
           readOnly={this.props.readonly}
         />
     );
@@ -120,8 +120,10 @@ export class TextAreas extends React.Component<IProps, IState> {
   handleTextChange(text: string) {
     //this.setState({scale: 'txt', text});
     this.setState({text});
+    let nRandom = Math.random() * 100 > 50 ? 1 : -1;
     let sNew = this.state.height2;
-    sNew = sNew ? (parseFloat(sNew)+2).toString() : "222";
+    sNew = sNew ? (parseFloat(sNew)+nRandom).toString() : "222";
+    //let sNew = "111";
     this.setState({height2: sNew});
     this.setState({width2: sNew});
   }
@@ -132,6 +134,16 @@ export class TextAreas extends React.Component<IProps, IState> {
 */
   handleHeightChange(height: string) {
     this.setState({height2: height});
+  }
+
+  handleMouseDown2(e: any ) {
+    //alert("Mdown, " + `${e.target.scrollHeight}px`);
+    console.log("Mdown2, " + `${e.target.scrollHeight}px`);
+    //this.setState({height2: "590"});
+    //e.target.style.height = `${e.target.scrollHeight+20}px`;
+    let sNew = this.state.height2 || "222";
+    //sNew = (parseFloat(sNew)+3).toString();
+    this.setState({height2: "100"});
   }
 
   render() {
@@ -152,14 +164,15 @@ export class TextAreas extends React.Component<IProps, IState> {
               text={text}
               height={heigth}
               width={width}
-              onTemperatureChange={this.handleTextChange} />
+              onTextChange={this.handleTextChange} />
             {' '}
             <TextArea3
               scale="res"
               text={sConvert(text, doUnderlines)}
               height={heigth}
               width={width}
-              readonly={true} />
+              readonly={true}
+              onTextChange={this.handleMouseDown2} />
           </div>
         </fieldset>
         <BoilingVerdict text={this.state.text}  />
