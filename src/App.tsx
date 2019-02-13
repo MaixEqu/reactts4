@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as mx from './mxlib';
 
-const sVersion = "ver 0.4.9 (J212)";
+const sVersion = "ver 0.4.10 (J213)";
 
 export class Main extends Component {
   render() {
@@ -72,7 +72,9 @@ class TextArea extends React.Component<IProps, IState> {
     const text = this.props.text;
     const taStyle = {
       width: this.props.width+'px',
-      height: this.props.height+'px'
+      height: this.props.height+'px',
+      border: "2px solid", 
+      verticalAlign: "top",
     };
     // <textarea style={taStyle} className="halfsize" rows={5} cols={45}
     return (
@@ -120,7 +122,7 @@ export class TextAreas extends React.Component<IProps, IState> {
       <div>
         <fieldset>
           <legend>Enter text:</legend>
-          <div>
+          <div style={{border: "0px solid", verticalAlign: "top"}}>
             <TextArea
               text={text}
               height={heigth}
