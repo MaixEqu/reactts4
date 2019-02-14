@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import * as mx from './mxlib';
-import mxdata from './1.json';
+//import mxdata from './1.json';
 //import mxdata from './1.txt'
 
-const sVersion = "ver 0.5.2 (J214)";
+const sVersion = "ver 0.5.3 (J214)";
 
 export class Main extends Component {
   render() {
@@ -25,6 +25,7 @@ interface IState {
   text: string
   width2?: string
   height2?: string
+  fetched?: boolean
 }
 
 interface IProps {
@@ -69,19 +70,22 @@ class TextArea extends React.Component<IProps, IState> {
     // e.target.style.height = 'inherit';
     // e.target.style.height = `${e.target.scrollHeight}px`;
   }
-
   componentDidMount(): void {
     if (this.props.text) {
       console.log("comp. DidMount: " + this.props.text);
     }
-    fetch('http://localhost:3000')
-      .then((response) => response.text())
-      .then((responseText) => {
-        console.log(responseText.split("\n"))
-      })
-      .catch((error: Error) => {
-        console.error(error);
-      });
+    const bF = this.state && this.state.fetched;
+    if (!bF) {
+      fetch('http://localhost:3000/1.json')
+        .then((response) => response.text())
+        .then((responseText) => {
+          console.log(responseText.split("\n"))
+          //this.setState({fetched: true})
+        })
+        .catch((error: Error) => {
+          console.error(error);
+        });
+    }
   }
 
   render() {
@@ -134,10 +138,14 @@ export class TextAreas extends React.Component<IProps, IState> {
     super(props);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleMDown = this.handleMDown.bind(this);
+    /*
     console.log(mxdata);
     const sName: string = mxdata.movies[1].title;
     console.log(sName);
     this.state = {text: sName + '. // hello to Mx 2', height2: '100'};
+    */
+   this.state = {text: '. // hello to Mx 2', height2: '100'};
+   //this.setState({fetched: false});
   }
 
   handleTextChange(text: string, e: any) {
@@ -171,11 +179,7 @@ export class TextAreas extends React.Component<IProps, IState> {
               height={heigth}
               onTextChange={this.handleTextChange}
               onMDown ={this.handleMDown} />
-            {' '}
-            <TextArea
-              text={sConvert(text, doUnderlines)}
-              height={heigth}
-              onMDown ={this.handleMDown} />
+
           </div>
         </fieldset>
         <BoilingVerdict text={this.state.text} />
@@ -183,3 +187,10 @@ export class TextAreas extends React.Component<IProps, IState> {
     );
   }
 }
+/*
+            {' '}
+            <TextArea
+              text={sConvert(text, doUnderlines)}
+              height={heigth}
+              onMDown ={this.handleMDown} />
+*/
