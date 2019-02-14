@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import * as mx from './mxlib';
 import mxdata from './1.json';
+//import mxdata from './1.txt'
 
-const sVersion = "ver 0.5.0 (J214)";
+const sVersion = "ver 0.5.1 (J214)";
 
 export class Main extends Component {
   render() {
@@ -69,6 +70,12 @@ class TextArea extends React.Component<IProps, IState> {
     // e.target.style.height = `${e.target.scrollHeight}px`;
   }
 
+  componentDidMount(): void {
+    if (this.props.text) {
+      console.log("comp. DidMount: " + this.props.text);
+    }
+  }
+
   render() {
     const text = this.props.text;
     const taStyle = {
@@ -89,6 +96,30 @@ class TextArea extends React.Component<IProps, IState> {
     );
   }
 }
+/*
+      fetch('http://localhost:3000' + dataOfFile)
+        .then((response) => response.text())
+        .then((responseText) => {
+          //console.log("Mx0+>>\n" + sObj(responseJsonL));
+          //console.log("Mx2+>>\n" + sObj(responseJson.split("\r\n")));
+          //const persons = (responseJson) ? responseJson.movies[2].title : "no 'responseJson'"; 
+          //const persons = (responseText) ? responseText : "no 'responseJson'"; 
+          const aResponseText = responseText.split("\n");
+          const aR = aResponseText.map( (row, i) => {
+            console.log(i + ":: " + row);
+            return `${i}: ${row}`
+          });
+          console.log(aR);
+          //console.log("Mx1>> " + persons);
+          //const persons2 = (responseJsonL) ? responseJsonL.movies[2].title : "no 'responseJsonL'";
+          // persons.replace("\n", "<br />");
+          this.setState({ persons: aResponseText[23] });
+          console.log("data file is text.")
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+*/
 
 export class TextAreas extends React.Component<IProps, IState> {
   constructor(props: IProps) {
