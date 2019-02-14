@@ -3,7 +3,7 @@ import * as mx from './mxlib';
 import mxdata from './1.json';
 //import mxdata from './1.txt'
 
-const sVersion = "ver 0.5.1 (J214)";
+const sVersion = "ver 0.5.2 (J214)";
 
 export class Main extends Component {
   render() {
@@ -74,6 +74,14 @@ class TextArea extends React.Component<IProps, IState> {
     if (this.props.text) {
       console.log("comp. DidMount: " + this.props.text);
     }
+    fetch('http://localhost:3000')
+      .then((response) => response.text())
+      .then((responseText) => {
+        console.log(responseText.split("\n"))
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
   }
 
   render() {
