@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import * as mx from './mxlib';
+import mxdata from './1.json';
 
-const sVersion = "ver 0.4.10 (J213)";
+const sVersion = "ver 0.5.0 (J214)";
 
 export class Main extends Component {
   render() {
@@ -94,7 +95,10 @@ export class TextAreas extends React.Component<IProps, IState> {
     super(props);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleMDown = this.handleMDown.bind(this);
-    this.state = {text: 'hello to Mx 2', height2: '100'};
+    console.log(mxdata);
+    const sName: string = mxdata.movies[1].title;
+    console.log(sName);
+    this.state = {text: sName + '. // hello to Mx 2', height2: '100'};
   }
 
   handleTextChange(text: string, e: any) {
