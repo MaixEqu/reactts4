@@ -1,17 +1,5 @@
 import React from "react";
 
-
-/*
-	Read a text file and out put the content.
-	
-	Example Usage:
-
-	var myTxt = require("./myTxt.txt");
-	...
-	<TextFileReader
-		txt={myTxt}
-	/>
- */
 class TextFileReader extends React.Component {
 	constructor(props) {
 		super(props);

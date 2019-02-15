@@ -3,7 +3,7 @@ import * as mx from './mxlib';
 //import mxdata from './1.json';
 //import mxdata from './1.txt'
 
-const sVersion = "ver 0.5.3 (J214)";
+const sVersion = "ver 0.5.4 (J215)";
 
 export class Main extends Component {
   render() {
@@ -74,18 +74,19 @@ class TextArea extends React.Component<IProps, IState> {
     if (this.props.text) {
       console.log("comp. DidMount: " + this.props.text);
     }
-    const bF = this.state && this.state.fetched;
-    if (!bF) {
-      fetch('http://localhost:3000/1.json')
-        .then((response) => response.text())
-        .then((responseText) => {
-          console.log(responseText.split("\n"))
-          //this.setState({fetched: true})
-        })
-        .catch((error: Error) => {
-          console.error(error);
-        });
-    }
+    //const sData = sGetData('http://localhost:3000/2.txt');
+    //console.log(sData);
+
+    /*
+    fetch('http://localhost:3000/1.txt')
+      .then((response) => response.text())
+      .then((responseText) => {
+        console.log(responseText)
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
+      */
   }
 
   render() {
@@ -108,30 +109,6 @@ class TextArea extends React.Component<IProps, IState> {
     );
   }
 }
-/*
-      fetch('http://localhost:3000' + dataOfFile)
-        .then((response) => response.text())
-        .then((responseText) => {
-          //console.log("Mx0+>>\n" + sObj(responseJsonL));
-          //console.log("Mx2+>>\n" + sObj(responseJson.split("\r\n")));
-          //const persons = (responseJson) ? responseJson.movies[2].title : "no 'responseJson'"; 
-          //const persons = (responseText) ? responseText : "no 'responseJson'"; 
-          const aResponseText = responseText.split("\n");
-          const aR = aResponseText.map( (row, i) => {
-            console.log(i + ":: " + row);
-            return `${i}: ${row}`
-          });
-          console.log(aR);
-          //console.log("Mx1>> " + persons);
-          //const persons2 = (responseJsonL) ? responseJsonL.movies[2].title : "no 'responseJsonL'";
-          // persons.replace("\n", "<br />");
-          this.setState({ persons: aResponseText[23] });
-          console.log("data file is text.")
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-*/
 
 export class TextAreas extends React.Component<IProps, IState> {
   constructor(props: IProps) {
@@ -144,8 +121,23 @@ export class TextAreas extends React.Component<IProps, IState> {
     console.log(sName);
     this.state = {text: sName + '. // hello to Mx 2', height2: '100'};
     */
-   this.state = {text: '. // hello to Mx 2', height2: '100'};
+    const sData = this.sGetData('http://localhost:3000/2.txt');
+    this.state = {text: "'. // hello to Mx 2\n" + sData, height2: '100'};
    //this.setState({fetched: false});
+  }
+  
+  sGetData = (path: string): string => {
+    let sRes = "no data";
+    fetch(path)
+      .then((response) => response.text())
+      .then((sRes) => {
+        console.log(sRes)
+        this.setState({text: sRes})
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
+    return sRes;
   }
 
   handleTextChange(text: string, e: any) {
