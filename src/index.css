@@ -14,7 +14,7 @@ code {
 }
 
 textarea.halfsize {
-  width: 48%;
+  width: 88%;
   resize: vertical; max-height: 800px; min-height: 100px;
   /* resize: horizontal; max-width: 700px; min-width: 50px; */
 }

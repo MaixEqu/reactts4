@@ -3,7 +3,7 @@ import * as mx from './mxlib';
 //import mxdata from './1.json';
 //import mxdata from './1.txt'
 
-const sVersion = "ver 0.5.4 (J215)";
+const sVersion = "ver 0.5.5 (J218)";
 
 export class Main extends Component {
   render() {
@@ -121,8 +121,14 @@ export class TextAreas extends React.Component<IProps, IState> {
     console.log(sName);
     this.state = {text: sName + '. // hello to Mx 2', height2: '100'};
     */
-    const sData = this.sGetData('http://localhost:3000/2.txt');
-    this.state = {text: "'. // hello to Mx 2\n" + sData, height2: '100'};
+    //const sData = this.sGetData('http://localhost:3000/data/3+.txt');
+    //const sDataUrl = location.protocol + '//' + location.host + '/data/3.txt'
+    //const sData = this.sGetData('http://localhost:3000/data/3+.txt');
+    const sDataUrl = location.href + '/data/3.txt'
+    const sData = this.sGetData(sDataUrl);
+    //alert("33")
+    //console.log("host: " + location.href);
+    this.state = {text: "'. // hello to Mx 2\n" + sData, height2: '400'};
    //this.setState({fetched: false});
   }
   
@@ -131,7 +137,7 @@ export class TextAreas extends React.Component<IProps, IState> {
     fetch(path)
       .then((response) => response.text())
       .then((sRes) => {
-        console.log(sRes)
+        // console.log(sRes)
         this.setState({text: sRes})
       })
       .catch((error: Error) => {
