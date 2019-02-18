@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import * as mx from './mxlib';
-//import mxdata from './1.json';
-//import mxdata from './1.txt'
 
-const sVersion = "ver 0.5.5 (J218)";
+const sVersion = "ver 0.5.6 (J218)";
 
 export class Main extends Component {
   render() {
@@ -74,19 +72,6 @@ class TextArea extends React.Component<IProps, IState> {
     if (this.props.text) {
       console.log("comp. DidMount: " + this.props.text);
     }
-    //const sData = sGetData('http://localhost:3000/2.txt');
-    //console.log(sData);
-
-    /*
-    fetch('http://localhost:3000/1.txt')
-      .then((response) => response.text())
-      .then((responseText) => {
-        console.log(responseText)
-      })
-      .catch((error: Error) => {
-        console.error(error);
-      });
-      */
   }
 
   render() {
@@ -97,39 +82,26 @@ class TextArea extends React.Component<IProps, IState> {
       border: "2px solid", 
       verticalAlign: "top",
     };
-    // <textarea style={taStyle} className="halfsize" rows={5} cols={45}
     return (
         <textarea style={taStyle} className="halfsize" value={text}
           onChange={this.handleChange}
           onKeyDown={this.handleKeyDown}
-          onMouseDown={this.handleMDown}
           onMouseUp={this.handleMDown}
           readOnly={this.props.readonly}
         />
     );
   }
 }
+//           onMouseDown={this.handleMDown}
 
 export class TextAreas extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleMDown = this.handleMDown.bind(this);
-    /*
-    console.log(mxdata);
-    const sName: string = mxdata.movies[1].title;
-    console.log(sName);
-    this.state = {text: sName + '. // hello to Mx 2', height2: '100'};
-    */
-    //const sData = this.sGetData('http://localhost:3000/data/3+.txt');
-    //const sDataUrl = location.protocol + '//' + location.host + '/data/3.txt'
-    //const sData = this.sGetData('http://localhost:3000/data/3+.txt');
-    const sDataUrl = location.href + '/data/3.txt'
+    const sDataUrl = location.href + '/data/4.txt'
     const sData = this.sGetData(sDataUrl);
-    //alert("33")
-    //console.log("host: " + location.href);
-    this.state = {text: "'. // hello to Mx 2\n" + sData, height2: '400'};
-   //this.setState({fetched: false});
+    this.state = {text: "'. // hello to Mx 2\n" + sData, height2: '700'};
   }
   
   sGetData = (path: string): string => {
@@ -177,7 +149,11 @@ export class TextAreas extends React.Component<IProps, IState> {
               height={heigth}
               onTextChange={this.handleTextChange}
               onMDown ={this.handleMDown} />
-
+            {' '}
+            <TextArea
+              text={sConvert(text, doUnderlines)}
+              height={heigth}
+              onMDown ={this.handleMDown} />
           </div>
         </fieldset>
         <BoilingVerdict text={this.state.text} />
