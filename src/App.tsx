@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as mx from './mxlib';
 import * as ipa from './ipa.lib';
 
-const sVersion = "ver 0.6.0 (J218)";
+const sVersion = "ver 0.6.1 (J218)";
 
 export class Main extends Component {
   render() {
@@ -32,6 +32,7 @@ interface IProps {
   readonly?: boolean;
   width?: string
   height?: string
+  datapath?: string
   onTextChange?: (value: string, e: any) => void;
   onMDown?: (e: any) => void;
 }
@@ -51,11 +52,39 @@ const scaleNames: Map<string, string> = new Map([
 ]);
 
 class TextArea extends React.Component<IProps, IState> {
+  private _sData = "";
   constructor(props: IProps) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleMDown = this.handleMDown.bind(this);
+    const sDataUrl = location.href + this.props.datapath; //'/data/5.txt'
+    console.log(sDataUrl)
+    //const sData = this.sGetData(sDataUrl);
+    this.sGetData(sDataUrl);
+    //this.setState({'text': sData})
+  }
+
+  componentDidMount(): void {
+    if (this.props.text) {
+      console.log("comp. DidMount2: " + this.props.text);
+      console.log("data: " + this._sData);
+    }
+    this.setState({text: this._sData})
+  }
+
+  sGetData = (path: string): void => {
+    //let sRes = "no data";
+    fetch(path)
+      .then((response) => response.text())
+      .then((sRes) => {
+        console.log(sRes)
+        this.setState({text: sRes}); // ._sData = sRes
+      })
+      .catch((error: Error) => {
+        console.error(error);
+      });
+    //return sRes;
   }
 
   handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -68,11 +97,6 @@ class TextArea extends React.Component<IProps, IState> {
     // console.log("Kdown1, " + `${e.target.scrollHeight}px`);
     // e.target.style.height = 'inherit';
     // e.target.style.height = `${e.target.scrollHeight}px`;
-  }
-  componentDidMount(): void {
-    if (this.props.text) {
-      console.log("comp. DidMount: " + this.props.text);
-    }
   }
 
   render() {
@@ -95,30 +119,27 @@ class TextArea extends React.Component<IProps, IState> {
 }
 //           onMouseDown={this.handleMDown}
 
+const sGetData2 = (path: string): string => {
+  let sRes = "no data";
+  fetch(path)
+    .then((response) => response.text())
+    .then((sRes) => {
+      return sRes;
+    })
+    .catch((error: Error) => {
+      console.error(error);
+    });
+  return sRes;
+}
+
 export class TextAreas extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleMDown = this.handleMDown.bind(this);
-    const sDataUrl = location.href + '/data/4.txt'
-    const sData = this.sGetData(sDataUrl);
-    this.state = {text: "'. // hello to Mx 2\n" + sData, height2: '700'};
+    this.state = {text: "'. // hello to Mx\n", height2: '300'};
   }
   
-  sGetData = (path: string): string => {
-    let sRes = "no data";
-    fetch(path)
-      .then((response) => response.text())
-      .then((sRes) => {
-        // console.log(sRes)
-        this.setState({text: sRes})
-      })
-      .catch((error: Error) => {
-        console.error(error);
-      });
-    return sRes;
-  }
-
   handleTextChange(text: string, e: any) {
     this.setState({text});
     this.setState({height2: e.target.scrollHeight});
@@ -149,10 +170,12 @@ export class TextAreas extends React.Component<IProps, IState> {
               text={text}
               height={heigth}
               onTextChange={this.handleTextChange}
+              datapath='data/5.txt'
               onMDown ={this.handleMDown} />
             {' '}
             <TextArea
-              text={ipa.ipa2cyr(text)}
+              text={text}
+              datapath='data/4.txt'
               height={heigth}
               onMDown ={this.handleMDown} />
           </div>
@@ -162,6 +185,7 @@ export class TextAreas extends React.Component<IProps, IState> {
     );
   }
 }
+//               text={ipa.ipa2cyr(text)}
 /*
             {' '}
             <TextArea

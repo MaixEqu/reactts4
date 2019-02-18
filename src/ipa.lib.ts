@@ -38,13 +38,13 @@ export const hReadIPA = (aIPA: string[]): MMap => {
 };
 
 export const ipa2cyr = (sText: string): string => { 
-// on note:  ᚏ ¨ з ȝ љ ѳ ѹ ҏ ҩ ӈ α ς υ ϙ ᵝ ᾱ ª ę ȩ ŏ ǫ ɘ ʊ ᴮ ᴬ ᴱ ᴴ ᴶ ᴿ ᵁ ᵂ ᵃ ᵅ ᵖ ᵘ ᶣ ⁱ
+// on note:  ᚏ ¨ з ȝ љ ѳ ѹ ҏ ҩ ӈ α ς υ ϙ ᵝ ᾱ ª ę ȩ ŏ ǫ ɘ ʊ ᴮ ᴬ ᴱ ᴾ ᵖ ᴴ ᴶ ᴿ ᵁ ᵂ ᵃ ᵅ ᵖ ᵘ ᶣ ⁱ
     if (sText) {
         let lineFr = "bdfghjklmnprstvwŋðθʧʃɡ";
       //let lineTo = "бдфгхйклмнпрствўҥӟċчшг"; // ßβ ʒƷǯҙӟ ċҫςĉ ӈ ʳ ˢ ˣ ˠ ʷ diphthong ⁰⁴⁵⁶⁷⁸⁹₀ₐ ѫ
-        let lineTo = "бдфгхйклмнпрствßҥҙҫчшг"; // ßβ ʒƷǯҙӟ ċҫςĉ ӈ ʳ ˢ ˣ ˠ ʷ diphthong ⁰⁴⁵⁶⁷⁸⁹₀ₐ
+        let lineTo = "бдфгхйклмнпрствᴃҥҙҫчшг"; // ᴮᴃᴯ ᴃ ϐʙɞßβ ʒƷǯҙӟ ċҫςĉ ӈ ʳ ˢ ˣ ˠ ʷ diphthong ⁰⁴⁵⁶⁷⁸⁹₀ₐ
         lineFr += "aeiuæʌəɔʋзzɒ";
-        lineTo += "аеіуæȧəоуӛзɒ"; // ɐ ᵉ ɑ ɒ ɘ ѧ ұ ӫ ӛ ȧ ą ė ţ ͽ ѳ ѹ ў ѝ ѐ θ ε ӱ ӯ ᴀ ȧ ᴬ ᵊ
+        lineTo += "аеіуæȧəоуӛзɒ"; // ɐ ᵉ ɑ ɒ ɘ ѧ ұ ӫ ӛ ȧ ą ė ţ ͽ ѳ ѹ ᴕ ў ѝ ѐ θ ε ӱ ӯ ᴀ ȧ ᴬ ᵊ
         let diftFr = "juaieieʋaʋiəəʋeəjojɔjajiiiз:";
         let diftTo = "|юайейеʸаʸіᵊоʸеᵃ|ë|ë|я|ї|ї|ӛ"; // ʸ ʲ ᵉ ª
         sText = sText.replace(/iə/g, "іᵊ");
