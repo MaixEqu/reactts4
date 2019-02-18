@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import * as mx from './mxlib';
+import * as ipa from './ipa.lib';
 
-const sVersion = "ver 0.5.6 (J218)";
+const sVersion = "ver 0.6.0 (J218)";
 
 export class Main extends Component {
   render() {
@@ -151,7 +152,7 @@ export class TextAreas extends React.Component<IProps, IState> {
               onMDown ={this.handleMDown} />
             {' '}
             <TextArea
-              text={sConvert(text, doUnderlines)}
+              text={ipa.ipa2cyr(text)}
               height={heigth}
               onMDown ={this.handleMDown} />
           </div>
