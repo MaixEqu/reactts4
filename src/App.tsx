@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as mx from './mxlib';
 import * as ipa from './ipa.lib';
 
-const sVersion = "ver 0.7.3 (J2K)";
+const sVersion = "ver 0.7.4 (J2K)";
 
 export class Main extends Component {
   render() {
@@ -61,21 +61,23 @@ export class TextAreas extends React.Component<IProps, IState> {
 
   handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     this.setState({text_s: e.target.value});
+    e.target.style.height = 'inherit';
+    e.target.style.height = `${e.target.scrollHeight}px`;    
   }
   handleMouseDown(e: React.MouseEvent<HTMLTextAreaElement>) {
-    // this.setState({height2: e.target.scrollHeight});
+    //this.setState({height_s: e.target.scrollHeight});
     // this.setState({width2: e.target.scrollWidth});
   }
   handleKeyDown(e: any ) {
     // console.log("Kdown1, " + `${e.target.scrollHeight}px`);
-    // e.target.style.height = 'inherit';
-    // e.target.style.height = `${e.target.scrollHeight}px`;
+    e.target.style.height = 'inherit';
+    e.target.style.height = `${e.target.scrollHeight}px`;
   }
 
   setTAText1(path: string, text: string) {
     console.log("infunc1: " + path + " done.");
     const nStage = this.state.stage_s || 0
-    this.setState({text_s: "inner1: " + text, stage_s: nStage+1})
+    this.setState({text_s: text, stage_s: nStage+1})
     this.setState({text2_s: ipa.ipa2cyr(text), stage_s: nStage+2})
     this._workCheck();
   }
@@ -112,7 +114,8 @@ export class TextAreas extends React.Component<IProps, IState> {
           {' '}
           <textarea style={taStyle} className="halfsize"
             value={this.state.text2_s || "no text 2"}
-            readOnly={true}
+            onChange={this.handleTextChange}
+            readOnly={false}
           />
           </div>
         </fieldset>
