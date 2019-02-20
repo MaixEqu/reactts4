@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as mx from './mxlib';
 import * as ipa from './ipa.lib';
 
-const sVersion = "ver 0.6.1 (J218)";
+const sVersion = "ver 0.7.0 (J2K)";
 
 export class Main extends Component {
   render() {
