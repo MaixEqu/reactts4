@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as mx from './mxlib';
 import * as ipa from './ipa.lib';
 
-const sVersion = "ver 0.7.0 (J2K)";
+const sVersion = "ver 0.7.1 (J2K)";
 
 export class Main extends Component {
   render() {
@@ -21,37 +21,31 @@ export class Main extends Component {
 
 // =====================================================
 interface IState {
-  text: string
-  width2?: string
-  height2?: string
-  fetched?: boolean
+  text_s: string
+  width_s?: string
+  height_s?: string
 }
 
 interface IProps {
-  text?: string;
-  readonly?: boolean;
-  width?: string
-  height?: string
+  text_p?: string;
+  width_p?: string
+  height_p?: string
   datapath?: string
+  readonly?: boolean;
   onTextChange?: (value: string, e: any) => void;
   onMDown?: (e: any) => void;
 }
 
-const BoilingVerdict = (state: IState) => {
-  return <p>Length of the text is [{state.text.length}] symbols.</p>;
+const TAInfo = (state: IState) => {
+  return <p>Symbols in 1st textarea: [{state.text_s.length}]</p>;
 }
 
-const doUnderlines = (s: string) => s.replace(/ /g, "_");
-const sConvert = (str: string, convert: Function): string => {
-  return convert(str);
-}
-
-const scaleNames: Map<string, string> = new Map([
+const taNames: Map<string, string> = new Map([
   ['txt', 'Text'],
   ['res', 'Result'],
 ]);
 
-class TextArea extends React.Component<IProps, IState> {
+class TextArea1 extends React.Component<IProps, IState> {
   private _sData = "";
   constructor(props: IProps) {
     super(props);
@@ -65,21 +59,13 @@ class TextArea extends React.Component<IProps, IState> {
     //this.setState({'text': sData})
   }
 
-  componentDidMount(): void {
-    if (this.props.text) {
-      console.log("comp. DidMount2: " + this.props.text);
-      console.log("data: " + this._sData);
-    }
-    this.setState({text: this._sData})
-  }
-
   sGetData = (path: string): void => {
     //let sRes = "no data";
     fetch(path)
       .then((response) => response.text())
       .then((sRes) => {
         console.log(sRes)
-        this.setState({text: sRes}); // ._sData = sRes
+        this.setState({text_s: sRes}); // ._sData = sRes
       })
       .catch((error: Error) => {
         console.error(error);
@@ -100,10 +86,10 @@ class TextArea extends React.Component<IProps, IState> {
   }
 
   render() {
-    const text = this.props.text;
+    const text = this.props.text_p;
     const taStyle = {
-      width: this.props.width+'px',
-      height: this.props.height+'px',
+      width: this.props.width_p+'px',
+      height: this.props.height_p+'px',
       border: "2px solid", 
       verticalAlign: "top",
     };
@@ -117,6 +103,7 @@ class TextArea extends React.Component<IProps, IState> {
     );
   }
 }
+
 //           onMouseDown={this.handleMDown}
 
 const sGetData2 = (path: string): string => {
@@ -137,50 +124,45 @@ export class TextAreas extends React.Component<IProps, IState> {
     super(props);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.handleMDown = this.handleMDown.bind(this);
-    this.state = {text: "'. // hello to Mx\n", height2: '300'};
+    this.state = {text_s: "'. // hello to Mx\n", height_s: '300'};
   }
   
   handleTextChange(text: string, e: any) {
-    this.setState({text});
-    this.setState({height2: e.target.scrollHeight});
-    // this.setState({width2: e.target.scrollWidth});
-    // console.log("onChange W2: " + e.target.scrollWidth);
-    // console.log("onChange H2: " + e.target.scrollHeight);
+    this.setState({text_s: text});
+    //this.setState({height2: e.target.scrollHeight});
   }
 
   handleMDown(e: any) {
-    // console.log("MDown10")
-    this.setState({height2: e.target.scrollHeight});
-    this.setState({width2: e.target.scrollWidth});
-    // console.log("onChange WD: " + e.target.scrollWidth);
-    // console.log("onChange HD: " + e.target.scrollHeight);
+    // this.setState({height2: e.target.scrollHeight});
+    // this.setState({width2: e.target.scrollWidth});
   }
 
   render() {
-    const text = this.state.text;
-    const heigth = this.state.height2;
-//    const width = this.state.width2;
-//               width={width}
+    const text = this.state.text_s;
+    const heigth = this.state.height_s;
+    const taStyle = {
+      height: this.state.height_s+'px',
+      width: this.state.width_s+'px',
+      border: "1px solid", 
+      verticalAlign: "top",
+    };
     return (
       <div>
         <fieldset>
           <legend>Enter text:</legend>
           <div style={{border: "0px solid", verticalAlign: "top"}}>
-            <TextArea
-              text={text}
-              height={heigth}
+            <TextArea1
+              text_p={text}
+              height_p={heigth}
               onTextChange={this.handleTextChange}
               datapath='data/5.txt'
               onMDown ={this.handleMDown} />
             {' '}
-            <TextArea
-              text={text}
-              datapath='data/4.txt'
-              height={heigth}
-              onMDown ={this.handleMDown} />
+            <textarea style={taStyle} className="halfsize" defaultValue={this.state.text_s}
+            />
           </div>
         </fieldset>
-        <BoilingVerdict text={this.state.text} />
+        <TAInfo text_s={this.state.text_s} />
       </div>
     );
   }
