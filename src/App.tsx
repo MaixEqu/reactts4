@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as mx from './mxlib';
 import * as ipa from './ipa.lib';
 
-const sVersion = "ver 0.7.2 (J2K)";
+const sVersion = "ver 0.7.3 (J2K)";
 
 export class Main extends Component {
   render() {
@@ -39,6 +39,7 @@ interface IState {
   width_s?: string
   height_s?: string
   stage_s?: number
+  text2_s?: string
 }
 interface IProps {
   text_p?: string;
@@ -50,15 +51,18 @@ export class TextAreas extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.handleTextChange = this.handleTextChange.bind(this);
-    this.handleMDown = this.handleMDown.bind(this);
+    this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.state = {text_s: "'. // hello to Mx\n", height_s: '300'};
+    this.setTAText1 = this.setTAText1.bind(this)
+    this.setTAText2 = this.setTAText2.bind(this)
+    this.state = {text_s: "hello to Mx 3", height_s: '300', stage_s: 0};
+    sGetDataX(location.href + '/data/' + '1.txt', this.setTAText1);
   }
 
   handleTextChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     this.setState({text_s: e.target.value});
   }
-  handleMDown(e: React.MouseEvent<HTMLTextAreaElement>) {
+  handleMouseDown(e: React.MouseEvent<HTMLTextAreaElement>) {
     // this.setState({height2: e.target.scrollHeight});
     // this.setState({width2: e.target.scrollWidth});
   }
@@ -68,28 +72,46 @@ export class TextAreas extends React.Component<IProps, IState> {
     // e.target.style.height = `${e.target.scrollHeight}px`;
   }
 
+  setTAText1(path: string, text: string) {
+    console.log("infunc1: " + path + " done.");
+    const nStage = this.state.stage_s || 0
+    this.setState({text_s: "inner1: " + text, stage_s: nStage+1})
+    this.setState({text2_s: ipa.ipa2cyr(text), stage_s: nStage+2})
+    this._workCheck();
+  }
+  setTAText2(path: string, text: string) {
+    console.log("infunc2: " + path + " done.");
+    const nStage = this.state.stage_s || 0
+    this.setState({text2_s: "inner2: " + text, stage_s: nStage+1})
+    this._workCheck();
+  }
+  _workCheck() {
+    const sMsg = (this.state.stage_s && this.state.stage_s >= 2) ? " ALL data" : "waiting more..."
+    console.log(sMsg);
+
+  }
+
   render() {
-    const heigth = this.state.height_s;
     const taStyle = {
       height: this.state.height_s+'px',
       width: this.state.width_s+'px',
-      border: "1px solid", 
+      border: "1px solid",
       verticalAlign: "top",
     };
     return (
       <div>
         <fieldset>
-          <legend>Enter text:</legend>
+          <legend>Enter text (stage:{this.state.stage_s}):</legend>
           <div style={{border: "0px solid", verticalAlign: "top"}}>
           <textarea style={taStyle} className="halfsize"
-            defaultValue={this.state.text_s}
+            value = {this.state.text_s}
             onChange={this.handleTextChange}
             onKeyDown={this.handleKeyDown}
-            onMouseUp={this.handleMDown}
+            onMouseUp={this.handleMouseDown}
           />
           {' '}
-          <textarea style={taStyle} className="halfsize" 
-            defaultValue={this.state.text_s}
+          <textarea style={taStyle} className="halfsize"
+            value={this.state.text2_s || "no text 2"}
             readOnly={true}
           />
           </div>
